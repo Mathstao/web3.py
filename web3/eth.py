@@ -335,6 +335,9 @@ class BaseEth(Module):
 
 class AsyncEth(BaseEth):
     is_async = True
+    account = Account()
+    defaultContractFactory: Type[Union[Contract, ConciseContract, ContractCaller]] = Contract  # noqa: E704,E501
+    iban = Iban
 
     @property
     async def accounts(self) -> Tuple[ChecksumAddress]:
@@ -518,6 +521,25 @@ class AsyncEth(BaseEth):
                 f"Transaction {HexBytes(transaction_hash) !r} is not in the chain "
                 f"after {timeout} seconds"
             )
+
+    @overload
+    def contract(self, address: None = None, **kwargs: Any) -> Type[Contract]: ...  # noqa: E704,E501
+
+    @overload  # noqa: F811
+    def contract(self, address: Union[Address, ChecksumAddress, ENS], **kwargs: Any) -> Contract: ...  # noqa: E704,E501
+
+    def contract(  # noqa: F811
+        self, address: Optional[Union[Address, ChecksumAddress, ENS]] = None, **kwargs: Any
+    ) -> Union[Type[Contract], Contract]:
+        print(11111)
+        ContractFactoryClass = kwargs.pop('ContractFactoryClass', self.defaultContractFactory)
+
+        ContractFactory = ContractFactoryClass.factory(self.web3, **kwargs)
+
+        if address:
+            return ContractFactory(address)
+        else:
+            return ContractFactory
 
     async def call(
         self,
