@@ -531,7 +531,6 @@ class AsyncEth(BaseEth):
     def contract(  # noqa: F811
         self, address: Optional[Union[Address, ChecksumAddress, ENS]] = None, **kwargs: Any
     ) -> Union[Type[Contract], Contract]:
-        print(11111)
         ContractFactoryClass = kwargs.pop('ContractFactoryClass', self.defaultContractFactory)
 
         ContractFactory = ContractFactoryClass.factory(self.web3, **kwargs)

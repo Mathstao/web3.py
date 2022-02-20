@@ -1038,7 +1038,6 @@ class ContractFunction:
             *self.args,
             **self.kwargs
         )
-        print(2222)
         return result
 
 
