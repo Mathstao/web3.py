@@ -1,7 +1,10 @@
 """Interaction with smart contracts over Web3 connector.
 
 """
+import time
+import uuid
 import copy
+import logging
 import itertools
 from typing import (
     TYPE_CHECKING,
@@ -997,6 +1000,9 @@ class ContractFunction:
         :return: ``Caller`` object that has contract public functions
             and variables exposed as Python methods
         """
+        req_uuid = str(uuid.uuid4())
+        st = time.time()
+        logging.error('Web3 req[{}] start, time_ts[{}]'.format(req_uuid, st))
         if transaction is None:
             call_transaction: TxParams = {}
         else:
@@ -1038,6 +1044,9 @@ class ContractFunction:
             *self.args,
             **self.kwargs
         )
+        et = time.time()
+        cost = et-st
+        logging.error('Web3 req[{}] end, time_ts[{}] cost[{}]'.format(req_uuid, et, cost))
         return result
 
 
@@ -1640,7 +1649,6 @@ async def async_call_contract_function(
         fn_args=args,
         fn_kwargs=kwargs,
     )
-
     return_data = await web3.eth.call(
         call_transaction,
         block_identifier=block_id,
