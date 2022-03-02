@@ -1002,7 +1002,7 @@ class ContractFunction:
         """
         req_uuid = str(uuid.uuid4())
         st = time.time()
-        logging.error('Web3 req[{}] start, time_ts[{}]'.format(req_uuid, st))
+        # logging.error('Web3 req[{}] start, time_ts[{}]'.format(req_uuid, st))
         if transaction is None:
             call_transaction: TxParams = {}
         else:
@@ -1046,7 +1046,7 @@ class ContractFunction:
         )
         et = time.time()
         cost = et-st
-        logging.error('Web3 req[{}] end, time_ts[{}] cost[{}]'.format(req_uuid, et, cost))
+        # logging.error('Web3 req[{}] end, time_ts[{}] cost[{}]'.format(req_uuid, et, cost))
         return result
 
 
